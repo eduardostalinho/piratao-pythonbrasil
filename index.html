@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<!--
+  Palestra Piratão Jukevideo - Python Brasil[9]
+
+  Authors: Eduardo Oliveira de Carvalho
+           Thiago Garcia
+-->
+
+<html>
+  <head>
+    <title>Piratão Jukevideo</title>
+
+    <meta charset='utf-8'>
+    <script src='/slides.js'></script>
+  </head>
+
+  <style>
+    .slides.template-default > article:not(.nobackground):not(.biglogo) {
+      background: url("/avatar.png") no-repeat scroll 650px 600px #FFFFFF !important;
+    }
+
+  </style>
+
+  <body style='display: none'>
+
+    <section class='slides layout-regular template-default'>
+
+      <article>
+        <h1>
+          Piratão JukeVideo
+        </h1>
+        <p>
+          Eduardo Carvalho e Thiago Garcia
+          <br>
+          <span class="green">PythonBrasil[9] - 2013</span>
+        </p>
+      </article>
+
+      <article>
+        <h3>
+          Eduardo Carvalho, aka Stalinho.
+        </h3>
+        <p>
+        </p>
+        <p>
+          entusiasta de Python e Software Livre.
+        </p>
+        <p>
+          <a href='http://eduardostalinho.org'>eduardostalinho.org</a>
+        </p>
+        <br/>
+        <h3>
+          Thiago Garcia
+        </h3>
+        <p>
+          entusiasta de Python e Netweaving.
+        </p>
+        <p>
+          <a href='http://othiago.com'>othiago.com</a>
+        </p>
+      </article>
+
+      <article>
+        <h1>
+          O projeto!
+        </h1>
+        <p>
+          Criar uma máquina no formato de uma jukebox para exibição de vídeo arte.
+        </p>
+        <p>
+          Software e hardware devem ser projetados.
+        </p>
+      </article>
+
+      <article>
+        <h2>
+          Grupos
+        </h2>
+        <div class="build">
+          <div>
+            <img height="150px" src="curto_circuito.gif">
+          </div>
+          <div>
+            <img height="150px" src="moleque.png">
+          </div>
+          <div>
+            <img height="150px" src="file_de_peixe.jpg">
+          </div>
+        </div>
+      </article>
+
+      <article>
+        <h2>
+          Escolhas
+        </h2>
+      </article>
+
+      <article>
+        <h2>
+          Pygame
+        </h2>
+        <ul class="build">
+        <li>
+          Dá a possibilidade de trabalhar com mídia (vídeo, sons, imagens).
+        </li>
+        <li>
+          Roda no Raspberry Pi.
+        </li>
+        <li>
+          Novas experiências.
+        </li>
+        </ul>
+      </article>
+
+      <article>
+        <h2>
+          Coopy
+        </h2>
+        <ul class="build">
+          <li>
+            Necessário para manter a quantidade de créditos da máquina.
+          </li>
+          <li>
+            Pure Python.
+          </li>
+          <li>
+            Persiste objetos em memória usando Pickle.
+          </li>
+          <li>
+            Desenvolvido na mesa ao lado.
+          </li>
+        </ul>
+      </article>
+
+      <article class="smaller">
+        <h3>
+          Coopy - The Code
+        </h3>
+        <p>
+          domain.py:
+        </p>
+        <pre>
+...
+class CreditsVault(object):
+    def __init__(self):
+        self.credits = 0
+
+    def add_credits(self, qty=2):
+        self.credits += qty
+...
+        </pre>
+        <p>
+          main.py:
+        </p>
+        <pre>
+...
+vault = init_persistent_system(CreditsVault)
+...
+        </pre>
+      </article>
+
+      <article>
+        <h2>
+          SoC
+        </h2>
+        <ul class="build">
+          <li>
+            Reduz os custos do projeto.
+          </li>
+          <li>
+            Está na moda. <b>:P</b>
+          </li>
+          <li class="red">
+            Não está sendo possível até agora. <b>:(</b>
+          </li>
+          <li class="red">
+            Usamos uma máquina de baixo custo Dual Core.
+          </li>
+        </ul>
+    </article>
+
+    <article>
+      <h2>
+        Make Makey
+      </h2>
+      <img src="make_makey.jpg">
+      <ul class="build">
+        <li>
+          Melhor maneira de integrar botões e moedeiro ao sistema.
+        </li>
+        <li class="blue">
+          Poupou preocupação.
+        </li>
+      </ul>
+    </article>
+
+      <article class="smaller">
+        <h3>
+          Pygame - MVC
+        </h3>
+        <pre>
+        ...
+class EventManager(object):
+    """
+    This object is responsible for coordinating most communication between the
+    Model, View, and Controller.
+    """
+    def __init__(self):
+        self.listeners = {}
+
+    def RegisterListener(self, listener):
+        self.listeners[listener] = 1
+
+    def UnregisterListener(self, listener):
+        if listener in self.listeners.keys():
+            del self.listeners[listener]
+
+    def post(self, event):
+        for listener in self.listeners.keys():
+            listener.notify(event)
+        ...
+        </pre>
+      </article>
+
+      <article class="smaller">
+        <h3>
+          Pygame - MVC
+        </h3>
+        <pre>
+        ...
+master_ctr = PygameMasterController(evManager, vault, video_queue)
+master_view = PygameMasterView(evManager, vault, video_queue)
+        ...
+        </pre>
+          <p>Vídeos: organizados no sistema de arquivos:</p>
+        <ul>
+          <li>&lt;letra&gt;/</li>
+          <ul>
+            <li>&lt;artista&gt;/</li>
+            <ul>
+              <li>&lt;vídeo&gt;.mpg</li>
+            </ul>
+          </ul>
+        </ul>
+        <p>Fila de vídeos: <span class="blue">[ ]</span></p>
+        </p>
+      </article>
+
+
+      <article>
+        <h2>
+          Foi exposto! \o/
+        </h2>
+        <img  height="450px" src="piratao_foto.jpg">
+      </article>
+
+
+      <article>
+        <h3>
+          Obrigado <span class="green">PythonBrasil[9]</span>!
+        </h3>
+        <ul>
+          <li><a href="https://bitbucket.org/thiagogds/piratao-jukebox/">https://bitbucket.org/thiagogds/piratao-jukebox/</a></li>
+        </ul>
+      </article>
+
+    </section>
+
+  </body>
+</html>
+
